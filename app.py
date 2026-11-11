@@ -23,6 +23,16 @@ st.set_page_config(page_title='Kalshi BTC 15m | Paper Desk',layout='wide',page_i
 st.title('₿ Kalshi BTC 15-Minute | Paper Trading Desk')
 st.caption('Live public Kalshi quotes • simulated orders only • no account connection • no real trades')
 
+st.subheader("Live Bitcoin Price")
+
+btc_price = get_btc_price()
+
+if btc_price is not None:
+    st.metric("BTC / USD", f"${btc_price:,.2f}")
+else:
+    st.warning("Bitcoin price temporarily unavailable")
+
+
 def conn():
     c=sqlite3.connect(DB,check_same_thread=False)
     c.execute('CREATE TABLE IF NOT EXISTS trades (id INTEGER PRIMARY KEY, ticker TEXT, side TEXT, qty INTEGER, entry REAL, exit REAL, status TEXT, opened TEXT, closed TEXT, pnl REAL, note TEXT)')
