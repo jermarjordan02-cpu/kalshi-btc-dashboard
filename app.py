@@ -4,6 +4,19 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 
+@st.cache_data(ttl=15)
+def get_btc_price():
+    try:
+        response = requests.get(
+            "https://api.coinbase.com/v2/prices/BTC-USD/spot",
+            timeout=8
+        )
+        response.raise_for_status()
+        return float(response.json()["data"]["amount"])
+    except requests.RequestException:
+        return None
+
+
 API='https://external-api.kalshi.com/trade-api/v2'
 DB='paper_trades.db'
 st.set_page_config(page_title='Kalshi BTC 15m | Paper Desk',layout='wide',page_icon='₿')
